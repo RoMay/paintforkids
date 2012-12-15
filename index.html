@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Chain</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="paper.js"></script>
+	<script type="text/paperscript" canvas="canvas">
+		// Adapted from the following Processing example:
+		// http://processing.org/learning/topics/follow3.html
+
+		var raster = new Raster('background');
+		var lastScale = 1;
+		//var center = view.center;
+		raster.fitBounds(view.bounds, true);
+		var painting = false;
+		var Obj = (function(){
+			var style = {
+				strokeColor: '#E4141B',
+				strokeWidth: 20,
+				strokeCap: 'round'
+			};
+		
+			return {
+				path: {},
+				
+				add_path: function(points){
+					//console.log("add");
+					this.path = new Path();
+					this.path.style = style;
+					this.path.strokeColor = '#e08285';
+				},
+				
+				move_path: function(points){
+					this.path.add(new Point(points));
+					this.path.smooth();
+				},
+				
+				finalize_path: function(){
+					this.path.strokeColor = '#e4141b';
+					this.path.simplify();
+				},
+				
+				test: function(){
+					//alert("test")
+				}
+			};
+		
+		})();
+		
+		console.log(Obj);
+		
+		project.activeLayer.position = view.center;
+		
+		function onMouseMove(event) {
+			
+			if(!painting) return;
+			
+			Obj.move_path(event.point);
+			
+		}
+
+		function onMouseDown(event) {
+			
+			//path.fullySelected = true;
+			painting = true;
+			Obj.add_path(event.point);
+			
+		}
+
+		function onMouseUp(event) {
+			
+			//path.fullySelected = false;
+			painting = false;
+			Obj.finalize_path();
+			
+		}
+		
+		// Reposition the paths whenever the window is resized:
+		function onResize(event) {
+			project.activeLayer.position = view.center;
+		}
+		
+	</script>
+	<style>
+	body {
+		background: url() no-repeat;
+	}
+	</style>
+	
+</head>
+<body>
+<div style="position:absolute; left:0; top:200px;width:100px;background:#ebebeb;">
+<ul>
+<li id="red">
+</li>
+<li id="yellow">
+</li>
+<li id="blue">
+</li>
+<li id="green">
+</li>
+<li id="black">
+</li>
+</ul>
+</div>
+	<!--<img id="lenna" style="width:100%; height:100%; position: absolute; z-index: -1; top: 0; left:0; display:none;" src="http://www.kostenlose-ausmalbilder.de/media/.gallery/image352.jpg" />-->
+	<img width="512" height="512" id="background" style="display: none;" src="http://www.kostenlose-ausmalbilder.de/media/.gallery/image352.jpg" />
+	<canvas style="position:relative;" id="canvas" resize></canvas>
+	
+</body>
+</html>

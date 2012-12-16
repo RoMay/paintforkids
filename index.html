@@ -1,112 +1,39 @@
 <!DOCTYPE html>
-<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Chain</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<script type="text/javascript" src="paper.js"></script>
-	<script type="text/paperscript" canvas="canvas">
-		// Adapted from the following Processing example:
-		// http://processing.org/learning/topics/follow3.html
+	<meta charset="utf-8"/>
+	<title>Paint for Kids</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" media="all" href="css/style.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<!-- Adding "maximum-scale=1" fixes the Mobile Safari auto-zoom bug: http://filamentgroup.com/examples/iosScaleBug/ -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/paper.js"></script>
+	<script type="text/paperscript" canvas="canvas" src="js/common.js"></script>
 
-		var raster = new Raster('background');
-		var lastScale = 1;
-		//var center = view.center;
-		raster.fitBounds(view.bounds, true);
-		var painting = false;
-		var Obj = (function(){
-			var style = {
-				strokeColor: '#E4141B',
-				strokeWidth: 20,
-				strokeCap: 'round'
-			};
-		
-			return {
-				path: {},
-				
-				add_path: function(points){
-					//console.log("add");
-					this.path = new Path();
-					this.path.style = style;
-					this.path.strokeColor = '#e08285';
-				},
-				
-				move_path: function(points){
-					this.path.add(new Point(points));
-					this.path.smooth();
-				},
-				
-				finalize_path: function(){
-					this.path.strokeColor = '#e4141b';
-					this.path.simplify();
-				},
-				
-				test: function(){
-					//alert("test")
-				}
-			};
-		
-		})();
-		
-		console.log(Obj);
-		
-		project.activeLayer.position = view.center;
-		
-		function onMouseMove(event) {
-			
-			if(!painting) return;
-			
-			Obj.move_path(event.point);
-			
-		}
-
-		function onMouseDown(event) {
-			
-			//path.fullySelected = true;
-			painting = true;
-			Obj.add_path(event.point);
-			
-		}
-
-		function onMouseUp(event) {
-			
-			//path.fullySelected = false;
-			painting = false;
-			Obj.finalize_path();
-			
-		}
-		
-		// Reposition the paths whenever the window is resized:
-		function onResize(event) {
-			project.activeLayer.position = view.center;
-		}
-		
-	</script>
-	<style>
-	body {
-		background: url() no-repeat;
-	}
-	</style>
-	
 </head>
 <body>
-<div style="position:absolute; left:0; top:200px;width:100px;background:#ebebeb;">
-<ul>
-<li id="red">
-</li>
-<li id="yellow">
-</li>
-<li id="blue">
-</li>
-<li id="green">
-</li>
-<li id="black">
-</li>
-</ul>
-</div>
-	<!--<img id="lenna" style="width:100%; height:100%; position: absolute; z-index: -1; top: 0; left:0; display:none;" src="http://www.kostenlose-ausmalbilder.de/media/.gallery/image352.jpg" />-->
-	<img width="512" height="512" id="background" style="display: none;" src="http://www.kostenlose-ausmalbilder.de/media/.gallery/image352.jpg" />
-	<canvas style="position:relative;" id="canvas" resize></canvas>
+	<div class="panelBox" id="toggle-panel">
+		<div class="bgPicture"></div>
+		<ul class="size" data-style="strokeWidth">
+			<li id="large">large</li>
+			<li id="medium">medium</li>
+			<li id="small">small</li>
+		</ul>
+		<ul class="colors" data-style="strokeColor">
+			<li id="red">red</li>
+			<li id="yellow">yellow</li>
+			<li id="blue">blue</li>
+			<li id="brown">brown</li>
+			<li id="green">green</li>
+			<li id="black">black</li>
+		</ul>
+	</div>
+	<div class="main">
+		<img width="512" height="512" id="background" class="dataModel" src="http://www.kostenlose-ausmalbilder.de/media/.gallery/image352.jpg" />
+		<canvas id="canvas" resize></canvas>
+	</div>
 	
 </body>
 </html>
